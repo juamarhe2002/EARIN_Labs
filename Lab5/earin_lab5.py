@@ -44,12 +44,6 @@ inverse_encode_labels = [
     'Sneaker', 'Bag', 'Ankle boot'
     ]
 
-val_dataset.__len__()
-
-val_dataset.__getitem__(2)
-
-inverse_encode_labels[1]
-
 LR_1 = 1e-3
 BATCH_1 = 16
 EPOCHS = 20
@@ -90,14 +84,6 @@ class NetworkModel_1(nn.Module):
     x = self.linear(x)  # -> 28
     x = self.output(x)  # -> 10
     return x
-
-model_1 = NetworkModel_1().to(device)
-
-from torchsummary import summary
-summary(model_1, input_size=(1, 28, 28))
-
-criterion = nn.CrossEntropyLoss()
-optimizer = SGD(model_1.parameters(), lr = LR_1)
 
 def train_loop(model, criterion, optimizer, train_loader, val_loader):
   total_loss_train_plot = []
@@ -185,7 +171,18 @@ def plot_batch_loss(total_loss_batch_plot):
 
   plt.show()
 
-"""### Experiment 1"""
+"""## Experiments
+
+### Experiment 1
+"""
+
+model_1 = NetworkModel_1().to(device)
+
+from torchsummary import summary
+summary(model_1, input_size=(1, 28, 28))
+
+criterion = nn.CrossEntropyLoss()
+optimizer = SGD(model_1.parameters(), lr = LR_1)
 
 train_loss, train_acc, val_loss, val_acc, batch_loss = train_loop(model_1, criterion, optimizer, train_loader, val_loader)
 
