@@ -18,10 +18,7 @@ from torch.optim import SGD
 from torchvision.transforms import transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
-from PIL import Image
-import pandas as pd
 import numpy as np
-import os
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -58,6 +55,7 @@ class NetworkModel_1(nn.Module):
     super().__init__()
     self.ini_hidden = ini_hidden
 
+    # Convolutional layers
     self.conv1 = nn.Conv2d(1, self.ini_hidden, kernel_size = 3, padding=1)
     self.conv2 = nn.Conv2d(self.ini_hidden, 2*self.ini_hidden, kernel_size = 3, padding=1)
 
@@ -66,8 +64,9 @@ class NetworkModel_1(nn.Module):
     self.activation_func = activation_func
 
     self.flatten = nn.Flatten()
-    self.linear = nn.Linear((2*self.ini_hidden*7*7), self.ini_hidden)
 
+    # Fully connected layer
+    self.linear = nn.Linear((2*self.ini_hidden*7*7), self.ini_hidden)
     self.output = nn.Linear(self.ini_hidden, len(inverse_encode_labels))
 
   def forward(self, x):
@@ -282,6 +281,7 @@ class NetworkModel_2(nn.Module):
   def __init__(self):
     super().__init__()
 
+    # Convolutional layer
     self.conv1 = nn.Conv2d(1, 28, kernel_size = 3, padding=1)
 
     self.pooling = nn.MaxPool2d(2, 2)
@@ -289,6 +289,8 @@ class NetworkModel_2(nn.Module):
     self.relu = nn.ReLU()
 
     self.flatten = nn.Flatten()
+
+    # Fully connected layer
     self.linear1 = nn.Linear((28*14*14), 28)
     self.output = nn.Linear(28, len(inverse_encode_labels))
 
@@ -318,7 +320,7 @@ class NetworkModel_3(nn.Module):
   def __init__(self):
     super().__init__()
     self.flatten = nn.Flatten()
-    self.output = nn.Linear((1*28*28), len(inverse_encode_labels))
+    self.output = nn.Linear((1*28*28), len(inverse_encode_labels))  # Linear model
 
   def forward(self, x):
     x = self.flatten(x) # -> 1 * 28 * 28
